@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CombVD and OSA MDS comparison</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #263b5d;
+      --muted: #687894;
+      --line: #d9e1ec;
+      --panel: #ffffff;
+      --page: #f4f7fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .tab {
+      padding: 11px 15px;
+      border: 1px solid #b7c5d9;
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: 14px;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .tab:hover {
+      border-color: #7189aa;
+      background: #edf3fa;
+    }
+
+    .tab.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .panel {
+      display: none;
+      overflow: hidden;
+      min-width: 0;
+      max-width: 1800px;
+      margin: 16px auto 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(38, 59, 93, 0.08);
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 720px;
+      border: 0;
+      background: #fff;
+    }
+
+    @media (max-width: 1000px) {
+      body { padding: 12px; }
+      iframe { height: 680px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="tabs" role="tablist" aria-label="MDS views">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-1" data-panel="panel-1">CombVD CAM16</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-2" data-panel="panel-2">CombVD sparse DV</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-3" data-panel="panel-3">OSA sparse DV</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-4" data-panel="panel-4">OSA CAM16</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-5" data-panel="panel-5">CombVD + OSA CAM16</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-6" data-panel="panel-6">CombVD + OSA sparse DV</button>
+  </nav>
+
+  <main>
+    <section class="panel active" id="panel-1" role="tabpanel">
+      <iframe loading="eager" title="CombVD CAM16 distances" src="CombVD_CAM16Distances_MDS3D_DelaunayAlpha_J70p00_76p50_p85/combvd_cam16_distances_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+    <section class="panel" id="panel-2" role="tabpanel">
+      <iframe loading="lazy" title="CombVD sparse DV" src="CombVD_SparseDV_CAM16Prior_MDS3D_DelaunayAlpha_J70p00_76p50_p85/combvd_sparse_dv_cam16_prior_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+    <section class="panel" id="panel-3" role="tabpanel">
+      <iframe loading="lazy" title="OSA sparse DV" src="OSA_SparseDV_CAM16Prior_MDS3D_DelaunayAlpha_J70p00_76p50_p85/osa_sparse_dv_cam16_prior_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+    <section class="panel" id="panel-4" role="tabpanel">
+      <iframe loading="lazy" title="OSA CAM16 distances" src="OSA_SparseDV_CAM16Prior_MDS3D_DelaunayAlpha_J70p00_76p50_p85/osa_cam16_distances_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+    <section class="panel" id="panel-5" role="tabpanel">
+      <iframe loading="lazy" title="Combined CAM16 distances" src="CombVD_OSA_SparseDV_CAM16Prior_MDS3D_DelaunayAlpha_J70p00_76p50_p85/combvd_osa_cam16_distances_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+    <section class="panel" id="panel-6" role="tabpanel">
+      <iframe loading="lazy" title="Combined sparse DV" src="CombVD_OSA_SparseDV_CAM16Prior_MDS3D_DelaunayAlpha_J70p00_76p50_p85/combvd_osa_sparse_dv_cam16_prior_mds3d_delaunay_alpha_p85_J_70p00_76p50.html"></iframe>
+    </section>
+  </main>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const panels = Array.from(document.querySelectorAll(".panel"));
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.panel;
+        tabs.forEach((item) => {
+          const active = item === tab;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", String(active));
+        });
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === target));
+      });
+    });
+  </script>
+</body>
+</html>
